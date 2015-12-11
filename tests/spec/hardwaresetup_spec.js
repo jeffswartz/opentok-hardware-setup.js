@@ -350,7 +350,14 @@ describe('opentok.js hardware setup component', function() {
           });
 
           it('calls stream.stop and the callback when getUserMedia completes', function(done) {
-            var mockStream = jasmine.createSpyObj('stream', ['stop']);
+            var mockStream = jasmine.createSpyObj('stream', ['stop', 'getTracks']);
+            mockStream.getTracks = function() {
+              var track = jasmine.createSpyObj('track', ['stop']);
+              track.stop = function() {
+                mockStream.stop();
+              }
+              return [track];
+            }
             window.getUserMedia = function(constraints, success, failure) {
               success(mockStream);
             };
