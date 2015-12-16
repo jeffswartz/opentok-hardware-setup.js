@@ -1,9 +1,73 @@
 "use strict";
 
+var selenium = require('selenium-standalone');
+var jasmine = require('jasmine');
+
+selenium.install({
+  // check for more recent versions of selenium here: 
+  // https://selenium-release.storage.googleapis.com/index.html 
+  version: '2.45.0',
+  baseURL: 'https://selenium-release.storage.googleapis.com',
+  drivers: {
+    chrome: {
+      // check for more recent versions of chrome driver here: 
+      // https://chromedriver.storage.googleapis.com/index.html 
+      version: '2.15',
+      arch: process.arch,
+      baseURL: 'https://chromedriver.storage.googleapis.com'
+    }
+  },
+  logger: function(message) {
+    console.log('message: ', message)
+  },
+  progressCb: function(totalLength, progressLength, chunkLength) {
+ 
+  }
+}, function(error) {
+	if (error) {
+		console.log('error');
+	} else {
+		console.log('server strat');
+	}
+});
+
 var express = require('express');
-// var assert = require('assert');
-// var test = require('selenium-webdriver/testing');
-var webdriver = require('selenium-webdriver');
+var webdriverio = require('webdriverio');
+
+describe('my webdriverio tests', function() {
+    var client = {};
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 9999999;
+
+    beforeEach(function() {
+        client = webdriverio.remote({ desiredCapabilities: {browserName: 'firefox'} });
+        client.init();
+    });
+
+    it('test it', function(done) {
+			client
+			    .url('http://google.com')
+			    .setValue('#q', 'webdriver')
+			    .click('#btnG');
+    });
+
+    afterEach(function(done) {
+        client.end(done);
+    });
+});
+
+/*
+
+var client = webdriverio.remote({
+  host: 'localhost',
+  port: 4444
+});
+
+client.init();
+
+client
+    .url('http://google.com')
+    .setValue('#q', 'webdriver')
+    .click('#btnG');
 
 // Set up test server:
 var app = express();
