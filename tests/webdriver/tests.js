@@ -12,7 +12,17 @@ app.use(express.static('.'));
 var server = app.listen(3030);
 
 // Start integration tests:
-var browser = new webdriver.Builder().usingServer().withCapabilities({'browserName': 'firefox' }).build();
+var browser = new webdriver.Builder()
+  .usingServer()
+	.withCapabilities({'browserName': 'firefox' })
+	.build();
+
+browser.get('http://localhost:3030/index.html');
+
+browser.findElements(webdriver.By.className('opentok-hardware-setup')).then(function(elements){
+	console.log('Found', elements.length, 'opentok-hardware-setup' );
+	//assertEquals('a', ['a'][0]);
+});
 
 browser.get('http://localhost:3030/index.html');
 
@@ -32,9 +42,12 @@ browser.findElements(webdriver.By.className('opentok-hardware-setup-mic')).then(
 });
 browser.findElements(webdriver.By.className('opentok-hardware-setup-selector')).then(function(elements) {
 	console.log('Found', elements.length, 'opentok-hardware-setup-selector' );
-	elements[0].click();
+  //console.log(elements[1]);
+	elements[0].click('option:nth-child(1)')
+
+  //elements[0].selectItem(2);
 });
-browser.quit();
+//browser.quit();
 
 /*
 test.describe('Google Search', function() {
