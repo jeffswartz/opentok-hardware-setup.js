@@ -65,6 +65,21 @@ automatically using NPM:
 }
 ```
 
+Testing
+-------
+
+To run unit tests (using Karma):
+
+```sh
+npm test
+```
+
+To run integration tests (using Selenium WebDriver):
+
+```sh
+npm run integration-test
+```
+
 Using the component
 -------------------
 
